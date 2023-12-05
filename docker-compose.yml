@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  db:
+    image: 'postgres:16'
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=projeto
+    ports:
+      - '5432:5432'
+    networks:
+      - network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    user: root
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'postgres@postgres.com'
+      PGADMIN_DEFAULT_PASSWORD: 'password'
+    ports:
+      - 8082:80
+    networks:
+      - network
+  
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8080'
+    networks:
+      - network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/projeto
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+  
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      target: dev
+      dockerfile: Dockerfile
+    volumes:
+      - .:/src
+      - /node_modules
+      - /.next
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - frontend/.env
+    environment:
+      NODE_ENV: development
+
+networks:
+  network:
+    driver: bridge
