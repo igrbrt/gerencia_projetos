@@ -28,9 +28,10 @@ Passos para rodar:
 ----------
 ```bash
   1. Clonar repositorio
-  2. cd backend && mvn package
-  3. docker-compose up -d
-  4. Abrir http://localhost:3000
+  2. docker-compose up db -d
+  3. cd backend && mvn package
+  4. docker-compose up -d
+  5. Abrir http://localhost:3000
 ```
 
 Documentação da API:
