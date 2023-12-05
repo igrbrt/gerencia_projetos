@@ -124,6 +124,23 @@ export function usePessoa({ id }: { id?: number }) {
       },
     });
 
+  const { mutate: deletarPessoaExec, isLoading: deletarPessoaCarregando } =
+    useMutation({
+      mutationKey: [REACT_QUERY_CHAVES.deletarPessoa],
+      mutationFn: async ({ id }: { id: number }) => {
+        const response = await fetch(`${API_URL}/pessoas/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error();
+        }
+      },
+    });
+
   return {
     pessoas: {
       data: pessoasData,
@@ -144,6 +161,10 @@ export function usePessoa({ id }: { id?: number }) {
     atualizarPessoa: {
       atualizar: atualizarPessoaExec,
       carregando: atualizarPessoaCarregando,
+    },
+    deletarPessoa: {
+      deletar: deletarPessoaExec,
+      carregando: deletarPessoaCarregando,
     },
   };
 }

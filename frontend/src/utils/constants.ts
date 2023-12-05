@@ -20,9 +20,11 @@ export const REACT_QUERY_CHAVES = {
   projetoPorId: "projetoPorId",
   criarProjeto: "criarProjeto",
   atualizarProjeto: "atualizarProjeto",
+  deletarProjeto: "deletarProjeto",
   pessoaPorId: "pessoaPorId",
   criarPessoa: "criarPessoa",
   atualizarPessoa: "atualizarPessoa",
+  deletarPessoa: "deletarPessoa",
   pessoas: "pessoas",
   projetos: "projetos",
 };

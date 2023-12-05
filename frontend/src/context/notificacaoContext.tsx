@@ -14,7 +14,7 @@ const NotificacaoContext = createContext<NotificacaoContextProps>({
 });
 
 interface NotificacaoProviderProps {
-  children: React.ReactNode; // Alterado de ReactNode para React.ReactNode
+  children: ReactNode;
 }
 
 export const NotificacaoProvider = ({ children }: NotificacaoProviderProps) => {

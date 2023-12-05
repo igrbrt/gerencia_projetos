@@ -4,7 +4,6 @@ import { ProjetoStatusEnum } from "../types/ProjetoStatusEnum";
 import { REACT_QUERY_CHAVES } from "../utils/constants";
 import { IErro } from "../types/APIErro";
 import { ProjetoProps } from "../componentes/TabelaProjetos/types";
-
 interface ProjetoDTO {
   id: number;
   nome: string;
@@ -151,6 +150,23 @@ export function useProjeto({ id }: { id?: number }) {
     },
   });
 
+  const { mutate: deletarProjetoExec, isLoading: deletarProjetoCarregando } =
+    useMutation({
+      mutationKey: [REACT_QUERY_CHAVES.deletarProjeto],
+      mutationFn: async ({ id }: { id: number }) => {
+        const response = await fetch(`${API_URL}/projetos/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error();
+        }
+      },
+    });
+
   return {
     projetos: {
       data: projetosData,
@@ -171,6 +187,10 @@ export function useProjeto({ id }: { id?: number }) {
     atualizarProjeto: {
       atualizar: atualizarProjetoExec,
       carregando: atualizarProjetoCarregando,
+    },
+    deletarProjeto: {
+      deletar: deletarProjetoExec,
+      carregando: deletarProjetoCarregando,
     },
   };
 }
